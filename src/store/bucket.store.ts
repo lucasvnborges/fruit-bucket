@@ -2,15 +2,20 @@ import { create } from "zustand";
 
 interface BucketState {
   buckets: Bucket[];
+  resetStore: () => void;
   addBucket: (bucket: Bucket) => void;
   deleteBucket: (bucketId: string) => void;
-  resetStore: () => void;
   addFruitToBucket: (bucketId: string, fruit: Fruit) => void;
   removeFruitFromBucket: (bucketId: string, fruitId: string) => void;
 }
 
 const useBucketStore = create<BucketState>((set) => ({
   buckets: [],
+
+  resetStore: () =>
+    set(() => ({
+      buckets: [],
+    })),
 
   addBucket: (bucket: Bucket) =>
     set((state) => ({
@@ -69,11 +74,6 @@ const useBucketStore = create<BucketState>((set) => ({
             }
           : bucket
       ),
-    })),
-
-  resetStore: () =>
-    set(() => ({
-      buckets: [],
     })),
 }));
 
