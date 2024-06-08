@@ -4,9 +4,10 @@ import useBucketStore from "../../store/bucket.store";
 
 const bucket_mock: Bucket = {
   id: "1",
-  total: 0,
-  fruitCapacity: 3,
   fruits: [],
+  occupation: 0,
+  totalPrice: 0,
+  fruitCapacity: 3,
 };
 
 const fruit_mock: Fruit = {
@@ -39,14 +40,33 @@ describe("Gerenciamento de estado dos baldes", () => {
     const { result } = renderHook(() => useBucketStore());
     const { addBucket, deleteBucket } = result.current;
 
-    const find = () =>
+    const bucket = () =>
       result.current.buckets.find((b) => b.id === bucket_mock.id);
 
     act(() => addBucket(bucket_mock));
-    expect(find()).toBeTruthy();
+    expect(bucket()).toBeTruthy();
 
     act(() => deleteBucket("1"));
-    expect(find()).toBeFalsy();
+    expect(bucket()).toBeFalsy();
+  });
+
+  test("Espera impedir a remoção de um balde caso exista uma fruta na lista", () => {
+    const { result } = renderHook(() => useBucketStore());
+    const { addBucket, addFruitToBucket, deleteBucket } = result.current;
+
+    const bucket = () =>
+      result.current.buckets.find((b) => b.id === bucket_mock.id);
+
+    act(() => addBucket(bucket_mock));
+    expect(bucket()).toBeTruthy();
+
+    act(() => addFruitToBucket(bucket_mock.id, fruit_mock));
+    const fruit = bucket()?.fruits.find((f) => f.id === fruit_mock.id);
+    expect(fruit).toBeTruthy();
+
+    act(() => deleteBucket("1"));
+
+    expect(bucket()).toBeTruthy();
   });
 
   test("Espera adicionar uma fruta na lista", () => {
