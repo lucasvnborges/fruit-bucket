@@ -6,7 +6,8 @@ interface Fruit {
 
 interface Bucket {
   id: string;
-  total: number;
-  fruitCapacity: number;
   fruits: Fruit[];
+  occupation: number;
+  totalPrice: number;
+  fruitCapacity: number;
 }
