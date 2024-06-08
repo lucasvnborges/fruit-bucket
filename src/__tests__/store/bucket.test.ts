@@ -15,7 +15,7 @@ const fruit_mock: Fruit = {
   price: 4.5,
 };
 
-describe("Gerenciamento de estado dos buckets", () => {
+describe("Gerenciamento de estado dos baldes", () => {
   afterEach(() => {
     const { result } = renderHook(() => useBucketStore());
     const { resetStore } = result.current;
