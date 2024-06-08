@@ -44,6 +44,7 @@ describe("Gerenciamento de estado dos buckets", () => {
 
     act(() => addBucket(bucket_mock));
     expect(find()).toBeTruthy();
+
     act(() => deleteBucket("1"));
     expect(find()).toBeFalsy();
   });
@@ -58,7 +59,7 @@ describe("Gerenciamento de estado dos buckets", () => {
     const bucket = result.current.buckets.find((b) => b.id === bucket_mock.id);
     expect(bucket).toBeTruthy();
     expect(bucket).toBeTypeOf("object");
-    
+
     const fruit = bucket?.fruits.find((f) => f.id === fruit_mock.id);
     expect(fruit).toBeTruthy();
   });
@@ -75,7 +76,6 @@ describe("Gerenciamento de estado dos buckets", () => {
     }
 
     const bucket = result.current.buckets.find((b) => b.id === bucket_mock.id);
-
     expect(bucket?.fruits.length).toBe(bucket_mock.fruitCapacity);
   });
 
@@ -94,6 +94,7 @@ describe("Gerenciamento de estado dos buckets", () => {
     expect(bucket()).toBeTruthy();
     expect(bucket()).toBeTypeOf("object");
     expect(fruit()).toBeTruthy();
+
     act(() => removeFruitFromBucket(bucket_mock.id, fruit_mock.id));
     expect(fruit()).toBeFalsy();
   });
