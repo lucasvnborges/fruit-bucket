@@ -1,20 +1,7 @@
 import { act, renderHook } from "@testing-library/react";
 import { afterEach, describe, expect, test } from "vitest";
 import useBucketStore from "../../store/bucket.store";
-
-const bucket_mock: Bucket = {
-  id: "1",
-  fruits: [],
-  occupation: 0,
-  totalPrice: 0,
-  fruitCapacity: 3,
-};
-
-const fruit_mock: Fruit = {
-  id: "1",
-  name: "Uva",
-  price: 4.5,
-};
+import { bucket_mock, fruit_mock } from "../../__mocks__";
 
 describe("Gerenciamento de estado dos baldes", () => {
   afterEach(() => {
