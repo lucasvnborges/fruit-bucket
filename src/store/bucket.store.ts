@@ -70,6 +70,7 @@ const useBucketStore = create<BucketState>((set) => ({
           : bucket
       ),
     })),
+
   resetStore: () =>
     set(() => ({
       buckets: [],
