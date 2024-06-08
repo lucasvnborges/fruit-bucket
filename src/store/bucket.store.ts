@@ -31,11 +31,21 @@ const useBucketStore = create<BucketState>((set) => ({
     }),
 
   addFruitToBucket: (bucketId, fruit) =>
-    set((state) => ({
-      buckets: state.buckets.map((bucket) => {
+    set((state) => {
+      const updatedBuckets = state.buckets.map((bucket) => {
         if (bucket.id === bucketId) {
           if (bucket.fruits.length < bucket.fruitCapacity) {
-            return { ...bucket, fruits: [...bucket.fruits, fruit] };
+            const updatedFruits = [...bucket.fruits, fruit];
+            const totalPrice = updatedFruits.reduce(
+              (total, fruit) => total + fruit.price,
+              0
+            );
+            let occupation =
+              (updatedFruits.length / bucket.fruitCapacity) * 100;
+
+            occupation = Number(occupation.toFixed(1));
+
+            return { ...bucket, fruits: updatedFruits, totalPrice, occupation };
           } else {
             console.warn(`Bucket ${bucketId} is full! Cannot add more fruits.`);
             return bucket;
@@ -43,8 +53,10 @@ const useBucketStore = create<BucketState>((set) => ({
         } else {
           return bucket;
         }
-      }),
-    })),
+      });
+
+      return { buckets: updatedBuckets };
+    }),
 
   removeFruitFromBucket: (bucketId: string, fruitId: string) =>
     set((state) => ({
