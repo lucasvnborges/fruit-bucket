@@ -22,6 +22,7 @@ const useBucketStore = create<BucketState>((set) => ({
       const bucket = state.buckets.find((b) => b.id === bucketId);
 
       if (bucket && bucket.fruits.length > 0) {
+        console.warn(`Buckets with fruits can not be excluded.`);
         return { buckets: state.buckets };
       }
 
