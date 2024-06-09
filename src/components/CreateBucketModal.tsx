@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { FC, useState } from "react";
 import { Form, InputNumber, Modal } from "antd";
 import useBucketStore from "../store/bucket.store";
 
@@ -7,10 +7,10 @@ type Props = {
   toggleVisibility: () => void;
 };
 
-export default function CreateBucketModal({
+export const CreateBucketModal: FC<Props> = ({
   visibility,
   toggleVisibility,
-}: Props) {
+}: Props) => {
   const { addBucket } = useBucketStore();
 
   const [form] = Form.useForm();
@@ -20,7 +20,7 @@ export default function CreateBucketModal({
     const id = Date.now().toString();
     const fruitCapacity = form.getFieldValue("fruitCapacity");
 
-    if (!fruitCapacity) return
+    if (!fruitCapacity) return;
 
     const bucket = {
       id,
@@ -72,4 +72,4 @@ export default function CreateBucketModal({
       </Form>
     </Modal>
   );
-}
+};

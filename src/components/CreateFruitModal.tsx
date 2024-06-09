@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { FC, useState } from "react";
 import { Form, Input, Modal } from "antd";
 import useFruitStore from "../store/fruit.store";
 
@@ -7,10 +7,10 @@ type Props = {
   toggleVisibility: () => void;
 };
 
-export default function CreateFruitModal({
+export const CreateFruitModal: FC<Props> = ({
   visibility,
   toggleVisibility,
-}: Props) {
+}) => {
   const { addFruit } = useFruitStore();
 
   const [form] = Form.useForm();
@@ -22,7 +22,7 @@ export default function CreateFruitModal({
     const price = Number(form.getFieldValue("price"));
     const fruit = { id, name, price };
 
-    if (!name || !price) return
+    if (!name || !price) return;
 
     setIsBusy(true);
     addFruit(fruit);
@@ -77,4 +77,4 @@ export default function CreateFruitModal({
       </Form>
     </Modal>
   );
-}
+};

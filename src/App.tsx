@@ -1,11 +1,13 @@
 import { CSSProperties, useState } from "react";
-import { Alert, Button, Empty, Row } from "antd";
 import useBucketStore from "./store/bucket.store";
 import useFruitStore from "./store/fruit.store";
-import CreateBucketModal from "./components/CreateBucketModal";
-import CreateFruitModal from "./components/CreateFruitModal";
-import { Bucket } from "./components/Bucket";
-import { Fruit } from "./components/Fruit";
+import { Alert, Button, Empty, Row } from "antd";
+import {
+  CreateBucketModal,
+  CreateFruitModal,
+  Bucket,
+  Fruit,
+} from "./components";
 
 function App() {
   const { buckets } = useBucketStore();
