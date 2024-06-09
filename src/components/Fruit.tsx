@@ -1,4 +1,4 @@
-import type { CSSProperties, FC } from "react";
+import { useEffect, useRef, type CSSProperties } from "react";
 import { useDrag } from "react-dnd";
 import useBucketStore from "../store/bucket.store";
 import useFruitStore from "../store/fruit.store";
@@ -20,9 +20,17 @@ interface DropTarget {
   id: string;
 }
 
-export const Fruit: FC<Props> = function Fruit({ fruit }) {
-  const { buckets, addFruitToBucket } = useBucketStore();
+export function Fruit({ fruit }: Props) {
+  const { addFruitToBucket } = useBucketStore();
   const { deleteFruit } = useFruitStore();
+
+  const bucketsRef = useRef(useBucketStore.getState().buckets);
+
+  useEffect(
+    () =>
+      useBucketStore.subscribe((state) => (bucketsRef.current = state.buckets)),
+    []
+  );
 
   const [{ isDragging }, drag] = useDrag(() => ({
     type: "box",
@@ -32,7 +40,7 @@ export const Fruit: FC<Props> = function Fruit({ fruit }) {
 
       if (item && dropTarget) {
         const bucketId = dropTarget.id;
-        const bucket = buckets.find((b) => b.id === bucketId);
+        const bucket = bucketsRef.current.find((b) => b.id === bucketId);
 
         if (bucket && bucket.occupation < 100) {
           addFruitToBucket(bucketId, fruit);
@@ -70,4 +78,4 @@ export const Fruit: FC<Props> = function Fruit({ fruit }) {
       <span>R$ {fruit.price}</span>
     </Card>
   );
-};
+}
