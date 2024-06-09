@@ -1,16 +1,25 @@
 import { CSSProperties, useState } from "react";
-import { Button, Row } from "antd";
+import { Alert, Button, Empty, Row } from "antd";
 import { Bucket } from "./components/Bucket";
-import CreateBucketModal from "./components/CreateBucketModal";
+import { Fruit } from "./components/Fruit";
 import useBucketStore from "./store/bucket.store";
+import CreateBucketModal from "./components/CreateBucketModal";
+import CreateFruitModal from "./components/CreateFruitModal";
+import useFruitStore from "./store/fruit.store";
 
 function App() {
   const { buckets } = useBucketStore();
+  const { fruits } = useFruitStore();
 
   const [createBucketModal, setCreateBucketModal] = useState(false);
+  const [createFruitModal, setCreateFruitModal] = useState(false);
 
   function toggleCreateBucketModal() {
     setCreateBucketModal(!createBucketModal);
+  }
+
+  function toggleCreateFruitModal() {
+    setCreateFruitModal(!createFruitModal);
   }
 
   return (
@@ -19,45 +28,74 @@ function App() {
         <h1>Balde de frutas</h1>
 
         <Row>
-          <Button style={{ ...button }}>Criar fruta</Button>
+          <Button style={{ ...button }} onClick={toggleCreateFruitModal}>
+            Criar fruta
+          </Button>
           <Button type="primary" onClick={toggleCreateBucketModal}>
             Criar balde
           </Button>
         </Row>
       </Row>
 
-      <Row>
-        {buckets.map((bucket) => (
-          <Bucket key={bucket.id} bucket={bucket} />
-        ))}
-      </Row>
+      {buckets.length === 0 && fruits.length === 0 ? (
+        <>
+          <Alert
+            showIcon
+            type="info"
+            message="Comece adicionando novos baldes ou frutas"
+          />
+          <Empty description={false} style={{ ...emptycontent }} />
+        </>
+      ) : (
+        <>
+          <Row>
+            {buckets.map((bucket) => (
+              <Bucket key={bucket.id} bucket={bucket} />
+            ))}
+          </Row>
+
+          <Row>
+            {fruits.map((fruit) => (
+              <Fruit key={fruit.id} fruit={fruit} />
+            ))}
+          </Row>
+        </>
+      )}
 
       <CreateBucketModal
         visibility={createBucketModal}
         toggleVisibility={toggleCreateBucketModal}
+      />
+
+      <CreateFruitModal
+        visibility={createFruitModal}
+        toggleVisibility={toggleCreateFruitModal}
       />
     </div>
   );
 }
 
 const container: CSSProperties = {
-  height: "100vh",
-  maxWidth: "720px",
-  margin: "0 auto",
   display: "flex",
   flexDirection: "column",
+  margin: "0 auto",
+  maxWidth: "720px",
 };
 
 const header: CSSProperties = {
+  padding: 4,
+  marginBottom: 6,
   display: "flex",
   alignItems: "center",
   justifyContent: "space-between",
-  padding: 4,
-  marginBottom: 6,
 };
 
 const button: CSSProperties = {
   marginRight: 12,
+};
+
+const emptycontent: CSSProperties = {
+  marginTop: 24,
 };
 
 export default App;
