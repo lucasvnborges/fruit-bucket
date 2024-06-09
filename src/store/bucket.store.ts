@@ -78,17 +78,26 @@ const useBucketStore = create<BucketState>()(
 
       removeFruitFromBucket: (bucketId: string, fruitId: string) =>
         set((state) => ({
-          buckets: state.buckets.map((bucket) =>
-            bucket.id === bucketId
+          buckets: state.buckets.map((bucket) => {
+            const updatedFruits = bucket.fruits.filter(
+              (fruit) => fruit.id !== fruitId
+            );
+            return bucket.id === bucketId
               ? {
                   ...bucket,
                   fruits: bucket.fruits.filter((fruit) => fruit.id !== fruitId),
+                  occupation: Number(
+                    (
+                      (updatedFruits.length / bucket.fruitCapacity) *
+                      100
+                    ).toFixed(1)
+                  ),
                   totalPrice: bucket.fruits
                     .filter((fruit) => fruit.id !== fruitId)
-                    .reduce((total, fruit) => total + fruit.price, 0), // Recalcula totalPrice
+                    .reduce((total, fruit) => total + fruit.price, 0),
                 }
-              : bucket
-          ),
+              : bucket;
+          }),
         })),
     }),
     {
