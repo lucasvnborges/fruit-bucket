@@ -1,4 +1,5 @@
 import { create } from "zustand";
+import { createJSONStorage, persist } from "zustand/middleware";
 
 type FruitStore = {
   fruits: Fruit[];
@@ -7,20 +8,29 @@ type FruitStore = {
   deleteFruit: (fruitId: string) => void;
 };
 
-const useFruitStore = create<FruitStore>((set) => ({
-  fruits: [],
-
-  resetStore: () =>
-    set(() => ({
+const useFruitStore = create<FruitStore>()(
+  persist(
+    (set) => ({
       fruits: [],
-    })),
 
-  addFruit: (fruit) => set((state) => ({ fruits: [...state.fruits, fruit] })),
+      resetStore: () =>
+        set(() => ({
+          fruits: [],
+        })),
 
-  deleteFruit: (fruitId) =>
-    set((state) => ({
-      fruits: state.fruits.filter((fruit) => fruit.id !== fruitId),
-    })),
-}));
+      addFruit: (fruit) =>
+        set((state) => ({ fruits: [...state.fruits, fruit] })),
+
+      deleteFruit: (fruitId) =>
+        set((state) => ({
+          fruits: state.fruits.filter((fruit) => fruit.id !== fruitId),
+        })),
+    }),
+    {
+      name: "fruit-storage",
+      storage: createJSONStorage(() => sessionStorage),
+    }
+  )
+);
 
 export default useFruitStore;

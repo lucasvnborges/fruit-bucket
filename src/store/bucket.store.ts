@@ -1,4 +1,5 @@
 import { create } from "zustand";
+import { persist, createJSONStorage } from "zustand/middleware";
 
 interface BucketState {
   buckets: Bucket[];
@@ -9,72 +10,87 @@ interface BucketState {
   removeFruitFromBucket: (bucketId: string, fruitId: string) => void;
 }
 
-const useBucketStore = create<BucketState>((set) => ({
-  buckets: [],
-
-  resetStore: () =>
-    set(() => ({
+const useBucketStore = create<BucketState>()(
+  persist(
+    (set) => ({
       buckets: [],
-    })),
 
-  addBucket: (bucket: Bucket) =>
-    set((state) => ({
-      buckets: [...state.buckets, bucket],
-    })),
+      resetStore: () =>
+        set(() => ({
+          buckets: [],
+        })),
 
-  deleteBucket: (bucketId: string) =>
-    set((state) => {
-      const bucket = state.buckets.find((b) => b.id === bucketId);
+      addBucket: (bucket: Bucket) =>
+        set((state) => ({
+          buckets: [...state.buckets, bucket],
+        })),
 
-      if (bucket && bucket.fruits.length > 0) {
-        console.warn(`Buckets with fruits can not be excluded.`);
-        return { buckets: state.buckets };
-      }
+      deleteBucket: (bucketId: string) =>
+        set((state) => {
+          const bucket = state.buckets.find((b) => b.id === bucketId);
 
-      return {
-        buckets: state.buckets.filter((b) => b.id !== bucketId),
-      };
-    }),
-
-  addFruitToBucket: (bucketId, fruit) =>
-    set((state) => {
-      const updatedBuckets = state.buckets.map((bucket) => {
-        if (bucket.id === bucketId) {
-          if (bucket.fruits.length < bucket.fruitCapacity) {
-            const updatedFruits = [...bucket.fruits, fruit];
-            const totalPrice = updatedFruits.reduce(
-              (total, fruit) => total + fruit.price,
-              0
-            );
-            let occupation =
-              (updatedFruits.length / bucket.fruitCapacity) * 100;
-
-            occupation = Number(occupation.toFixed(1));
-
-            return { ...bucket, fruits: updatedFruits, totalPrice, occupation };
-          } else {
-            console.warn(`Bucket ${bucketId} is full! Cannot add more fruits.`);
-            return bucket;
+          if (bucket && bucket.fruits.length > 0) {
+            console.warn(`Buckets with fruits can not be excluded.`);
+            return { buckets: state.buckets };
           }
-        } else {
-          return bucket;
-        }
-      });
 
-      return { buckets: updatedBuckets };
-    }),
+          return {
+            buckets: state.buckets.filter((b) => b.id !== bucketId),
+          };
+        }),
 
-  removeFruitFromBucket: (bucketId: string, fruitId: string) =>
-    set((state) => ({
-      buckets: state.buckets.map((bucket) =>
-        bucket.id === bucketId
-          ? {
-              ...bucket,
-              fruits: bucket.fruits.filter((fruit) => fruit.id !== fruitId),
+      addFruitToBucket: (bucketId, fruit) =>
+        set((state) => {
+          const updatedBuckets = state.buckets.map((bucket) => {
+            if (bucket.id === bucketId) {
+              if (bucket.fruits.length < bucket.fruitCapacity) {
+                const updatedFruits = [...bucket.fruits, fruit];
+                const totalPrice = updatedFruits.reduce(
+                  (total, fruit) => total + fruit.price,
+                  0
+                );
+                let occupation =
+                  (updatedFruits.length / bucket.fruitCapacity) * 100;
+
+                occupation = Number(occupation.toFixed(1));
+
+                return {
+                  ...bucket,
+                  fruits: updatedFruits,
+                  totalPrice,
+                  occupation,
+                };
+              } else {
+                console.warn(
+                  `Bucket ${bucketId} is full! Cannot add more fruits.`
+                );
+                return bucket;
+              }
+            } else {
+              return bucket;
             }
-          : bucket
-      ),
-    })),
-}));
+          });
+
+          return { buckets: updatedBuckets };
+        }),
+
+      removeFruitFromBucket: (bucketId: string, fruitId: string) =>
+        set((state) => ({
+          buckets: state.buckets.map((bucket) =>
+            bucket.id === bucketId
+              ? {
+                  ...bucket,
+                  fruits: bucket.fruits.filter((fruit) => fruit.id !== fruitId),
+                }
+              : bucket
+          ),
+        })),
+    }),
+    {
+      name: "bucket-storage",
+      storage: createJSONStorage(() => sessionStorage),
+    }
+  )
+);
 
 export default useBucketStore;
