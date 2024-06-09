@@ -56,7 +56,7 @@ export const Bucket: FC<Props> = ({ bucket }) => {
         <Flex wrap gap={4}>
           {bucket.fruits.map((fruit, index) => (
             <Card size="small" key={fruit.id + index}>
-              <span style={{ ...rightspace }}>{fruit.name}</span>
+              <span style={{ ...fruitname }}>{fruit.name}</span>
 
               <Button
                 size="small"
@@ -103,4 +103,9 @@ const rightspace: CSSProperties = {
 
 const progress: CSSProperties = {
   marginTop: 6,
+};
+
+const fruitname: CSSProperties = {
+  marginRight: 6,
+  textTransform: "capitalize",
 };

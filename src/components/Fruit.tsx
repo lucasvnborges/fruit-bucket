@@ -4,14 +4,6 @@ import useBucketStore from "../store/bucket.store";
 import useFruitStore from "../store/fruit.store";
 import { Button, Card, Row } from "antd";
 
-const style: CSSProperties = {
-  margin: 4,
-  marginTop: 16,
-  marginRight: 6,
-  marginBottom: 6,
-  cursor: "move",
-};
-
 export interface Props {
   fruit: Fruit;
 }
@@ -59,10 +51,10 @@ export function Fruit({ fruit }: Props) {
       ref={drag}
       size="small"
       data-testid="box"
-      style={{ ...style, opacity }}
+      style={{ ...container, opacity }}
     >
       <Row>
-        <span style={{ marginRight: 6 }}>
+        <span style={{ ...fruitname }}>
           <b>{fruit.name}</b>
         </span>
 
@@ -79,3 +71,16 @@ export function Fruit({ fruit }: Props) {
     </Card>
   );
 }
+
+const container: CSSProperties = {
+  margin: 4,
+  marginTop: 16,
+  marginRight: 6,
+  marginBottom: 6,
+  cursor: "move",
+};
+
+const fruitname: CSSProperties = {
+  marginRight: 6,
+  textTransform: "capitalize",
+};
