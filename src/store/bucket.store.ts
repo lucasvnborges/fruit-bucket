@@ -45,7 +45,8 @@ const useBucketStore = create<BucketState>()(
             if (bucket.id === bucketId) {
               if (bucket.fruits.length < bucket.fruitCapacity) {
                 const updatedFruits = [...bucket.fruits, fruit];
-                const totalPrice = updatedFruits.reduce(
+
+                let totalPrice = updatedFruits.reduce(
                   (total, fruit) => total + fruit.price,
                   0
                 );
@@ -53,6 +54,7 @@ const useBucketStore = create<BucketState>()(
                   (updatedFruits.length / bucket.fruitCapacity) * 100;
 
                 occupation = Number(occupation.toFixed(1));
+                totalPrice = Number(totalPrice.toFixed(2));
 
                 return {
                   ...bucket,
@@ -81,6 +83,9 @@ const useBucketStore = create<BucketState>()(
               ? {
                   ...bucket,
                   fruits: bucket.fruits.filter((fruit) => fruit.id !== fruitId),
+                  totalPrice: bucket.fruits
+                    .filter((fruit) => fruit.id !== fruitId)
+                    .reduce((total, fruit) => total + fruit.price, 0), // Recalcula totalPrice
                 }
               : bucket
           ),
