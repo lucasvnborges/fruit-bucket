@@ -18,7 +18,7 @@ export const Bucket: FC<Props> = ({ bucket }) => {
   return (
     <Col xs={24} md={12}>
       <div ref={drop} style={{ ...container }}>
-        <Row>
+        <Row style={{ ...row }}>
           <Button
             danger
             size="small"
@@ -27,8 +27,14 @@ export const Bucket: FC<Props> = ({ bucket }) => {
           >
             x
           </Button>
+
+          <span>
+            {bucket.fruits.length === bucket.fruitCapacity &&
+              "Alcançou a capacidade máxima"}
+          </span>
         </Row>
-        <Row style={{ ...header }}>
+        
+        <Row style={{ ...row }}>
           <p style={{ ...rightspace }}>
             Total: <b>R$ {bucket.totalPrice}</b>
           </p>
@@ -75,8 +81,9 @@ const container: CSSProperties = {
   border: "1px solid #f0f0f0",
 };
 
-const header: CSSProperties = {
+const row: CSSProperties = {
   display: "flex",
+  alignItems: "center",
   justifyContent: "space-between",
 };
 
