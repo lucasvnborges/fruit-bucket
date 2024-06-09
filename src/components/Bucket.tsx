@@ -1,6 +1,6 @@
 import type { CSSProperties, FC } from "react";
 import { useDrop } from "react-dnd";
-import { Button, Card, Col, Flex, Progress, Row } from "antd";
+import { Button, Card, Col, Flex, Progress, Row, message } from "antd";
 import useBucketStore from "../store/bucket.store";
 
 export interface Props {
@@ -10,20 +10,30 @@ export interface Props {
 export const Bucket: FC<Props> = ({ bucket }) => {
   const { deleteBucket, removeFruitFromBucket } = useBucketStore();
 
+  const [toast, contextToaster] = message.useMessage();
   const [, drop] = useDrop(() => ({
     accept: "box",
     drop: () => ({ id: bucket.id }),
   }));
 
+  function handleDeleteBucket() {
+    if (bucket.fruits.length > 0)
+      return toast.warning("O balde precisa estar vazio para ser excluído.");
+
+    deleteBucket(bucket.id);
+  }
+
   return (
     <Col xs={24} md={12}>
+      {contextToaster}
+
       <div ref={drop} style={{ ...container }}>
         <Row style={{ ...row }}>
           <Button
             danger
             size="small"
             type="dashed"
-            onClick={() => deleteBucket(bucket.id)}
+            onClick={handleDeleteBucket}
           >
             x
           </Button>
@@ -33,7 +43,7 @@ export const Bucket: FC<Props> = ({ bucket }) => {
               "Alcançou a capacidade máxima"}
           </span>
         </Row>
-        
+
         <Row style={{ ...row }}>
           <p style={{ ...rightspace }}>
             Total: <b>R$ {bucket.totalPrice}</b>
