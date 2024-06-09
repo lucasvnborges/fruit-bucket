@@ -21,7 +21,7 @@ interface DropTarget {
 }
 
 export const Fruit: FC<Props> = function Fruit({ fruit }) {
-  const { addFruitToBucket } = useBucketStore();
+  const { buckets, addFruitToBucket } = useBucketStore();
   const { deleteFruit } = useFruitStore();
 
   const [{ isDragging }, drag] = useDrag(() => ({
@@ -32,8 +32,12 @@ export const Fruit: FC<Props> = function Fruit({ fruit }) {
 
       if (item && dropTarget) {
         const bucketId = dropTarget.id;
-        addFruitToBucket(bucketId, fruit);
-        deleteFruit(fruit.id);
+        const bucket = buckets.find((b) => b.id === bucketId);
+
+        if (bucket && bucket.occupation < 100) {
+          addFruitToBucket(bucketId, fruit);
+          deleteFruit(fruit.id);
+        }
       }
     },
     collect: (monitor) => ({
