@@ -16,9 +16,11 @@ export default function CreateBucketModal({
   const [form] = Form.useForm();
   const [isBusy, setIsBusy] = useState(false);
 
-  function createBucket() {
+  function handleCreateBucket() {
     const id = Date.now().toString();
     const fruitCapacity = form.getFieldValue("fruitCapacity");
+
+    if (!fruitCapacity) return
 
     const bucket = {
       id,
@@ -45,7 +47,7 @@ export default function CreateBucketModal({
       okText="Confirmar"
       cancelText="Cancelar"
       title="Criar novo balde"
-      onOk={createBucket}
+      onOk={handleCreateBucket}
       onCancel={handleCloseModal}
       okButtonProps={{ loading: isBusy }}
     >
