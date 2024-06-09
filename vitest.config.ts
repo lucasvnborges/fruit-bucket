@@ -11,6 +11,7 @@ export default mergeConfig(
         include: ["src/**"],
       },
       exclude: [...configDefaults.exclude],
+      reporters: ["verbose"],
     },
   })
 );
