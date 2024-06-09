@@ -59,6 +59,15 @@ function App() {
               <Fruit key={fruit.id} fruit={fruit} />
             ))}
           </Row>
+
+          {fruits.length > 0 && (
+            <Alert
+              showIcon
+              type="info"
+              style={{ ...alert }}
+              message="Arraste e solte as frutas nos baldes."
+            />
+          )}
         </>
       )}
 
@@ -96,6 +105,10 @@ const button: CSSProperties = {
 
 const emptycontent: CSSProperties = {
   marginTop: 24,
+};
+
+const alert: CSSProperties = {
+  margin: 4,
 };
 
 export default App;
