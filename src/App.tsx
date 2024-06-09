@@ -1,4 +1,4 @@
-import { CSSProperties, useState } from "react";
+import { CSSProperties, useMemo, useState } from "react";
 import useBucketStore from "./store/bucket.store";
 import useFruitStore from "./store/fruit.store";
 import { Alert, Button, Empty, Row } from "antd";
@@ -23,6 +23,19 @@ function App() {
   function toggleCreateFruitModal() {
     setCreateFruitModal(!createFruitModal);
   }
+
+  const renderBuckets = useMemo(
+    () =>
+      buckets
+        .sort((a, b) => b.occupation - a.occupation)
+        .map((bucket) => <Bucket key={bucket.id} bucket={bucket} />),
+    [buckets]
+  );
+
+  const renderFruits = useMemo(
+    () => fruits.map((fruit) => <Fruit key={fruit.id} fruit={fruit} />),
+    [fruits]
+  );
 
   return (
     <div style={{ ...container }}>
@@ -50,17 +63,9 @@ function App() {
         </>
       ) : (
         <>
-          <Row>
-            {buckets.map((bucket) => (
-              <Bucket key={bucket.id} bucket={bucket} />
-            ))}
-          </Row>
+          <Row>{renderBuckets}</Row>
 
-          <Row>
-            {fruits.map((fruit) => (
-              <Fruit key={fruit.id} fruit={fruit} />
-            ))}
-          </Row>
+          <Row>{renderFruits}</Row>
 
           {fruits.length > 0 && (
             <Alert
