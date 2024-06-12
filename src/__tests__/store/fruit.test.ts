@@ -1,6 +1,6 @@
 import { act, renderHook } from "@testing-library/react";
 import { afterEach, describe, expect, test } from "vitest";
-import useFruitStore from "../../store/fruit.store";
+import { useFruitStore } from "../../store";
 import { fruit_mock } from "../../__mocks__";
 
 describe("Gerenciamento de estado das frutas", () => {

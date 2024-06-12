@@ -1,8 +1,7 @@
 import { useEffect, useRef, type CSSProperties } from "react";
 import { useDrag } from "react-dnd";
+import { useBucketStore, useFruitStore } from "../store";
 import { Button, Card, Row } from "antd";
-import useBucketStore from "../store/bucket.store";
-import useFruitStore from "../store/fruit.store";
 
 export interface Props {
   fruit: Fruit;

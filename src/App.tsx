@@ -1,6 +1,5 @@
 import { CSSProperties, useMemo, useState } from "react";
-import useBucketStore from "./store/bucket.store";
-import useFruitStore from "./store/fruit.store";
+import { useBucketStore, useFruitStore } from "./store";
 import { Alert, Button, Empty, Row } from "antd";
 import {
   CreateBucketModal,
