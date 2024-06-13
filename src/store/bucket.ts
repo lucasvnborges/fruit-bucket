@@ -43,7 +43,7 @@ const useBucketStore = create<BucketState>()(
         set((state) => {
           const updatedBuckets = state.buckets.map((bucket) => {
             if (bucket.id !== bucketId) return bucket;
-            if (bucket.fruits.length >= bucket.fruitCapacity) {
+            if (bucket.fruits.length === bucket.fruitCapacity) {
               console.warn(
                 `Bucket ${bucketId} is full! Cannot add more fruits.`
               );
