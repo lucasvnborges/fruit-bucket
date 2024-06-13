@@ -5,11 +5,11 @@ Gerenciamento offline de baldes de frutas
 ### As tecnologias utilizadas foram
 
 - Vite
-- React
-- Ant Design
-- React DnD
-- Zustand
 - Vitest
+- React
+- React DnD
+- Ant Design
+- Zustand
 - Eslint
 
 ## Instalação dos pacotes
