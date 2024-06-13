@@ -1,6 +1,6 @@
 import { FC, useState } from "react";
-import { useBucketStore } from "../store";
 import { Form, InputNumber, Modal } from "antd";
+import { useBucketStore } from "../store";
 
 type Props = {
   visibility: boolean;
