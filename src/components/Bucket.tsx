@@ -1,7 +1,7 @@
 import type { CSSProperties, FC } from "react";
 import { useDrop } from "react-dnd";
 import { Button, Card, Col, Flex, Progress, Row, message } from "antd";
-import { useBucketStore } from "../store";
+import { useBucketStore } from "@/store";
 
 export interface Props {
   bucket: Bucket;

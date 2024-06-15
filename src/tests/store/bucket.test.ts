@@ -1,7 +1,7 @@
 import { act, renderHook } from "@testing-library/react";
 import { afterEach, describe, expect, test } from "vitest";
-import { useBucketStore } from "../../store";
-import { bucket_mock, fruit_mock } from "../../mocks";
+import { useBucketStore } from "@/store";
+import { bucket_mock, fruit_mock } from "@/mocks";
 
 describe("Gerenciamento de estado dos baldes", () => {
   afterEach(() => {

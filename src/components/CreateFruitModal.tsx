@@ -1,6 +1,6 @@
 import { FC, useState } from "react";
 import { Form, Input, Modal } from "antd";
-import { useFruitStore } from "../store";
+import { useFruitStore } from "@/store";
 
 type Props = {
   visibility: boolean;
